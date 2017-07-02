@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a todolist server created for Use Dipper Assignment.  
+  description: "This is a todolist server created for Use Dipper Assignment." 
   version: "1.0.0"
   title: "NodeJs + Swagger To Do List Application"  
   contact:
