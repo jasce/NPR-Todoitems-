@@ -1,7 +1,7 @@
 'use strict';
 
 var app = require('express')();
-var https = require('https');
+var http = require('http');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
@@ -95,7 +95,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   app.use(middleware.swaggerUi());
 
   // Start the server
-  https.createServer(app).listen(serverPort, function () {
+  http.createServer(app).listen(serverPort, function () {
     console.log('Your server is listening on port %d ', serverPort);
     console.log('Swagger-ui is available on /docs');
   });
