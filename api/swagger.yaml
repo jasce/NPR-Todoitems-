@@ -6,7 +6,7 @@ info:
   title: "NodeJs + Swagger To Do List Application"  
   contact:
     email: "jascee.gtbit@gmail.com"  
-host: "https://use-dipper-assignment.herokuapp.com"
+host: "use-dipper-assignment.herokuapp.com"
 basePath: "/v2"
 responses:
   UnauthorizedError:
