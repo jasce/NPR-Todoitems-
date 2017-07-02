@@ -1,18 +1,11 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about\
-    \     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,\
-    \ #swagger](http://swagger.io/irc/).      For this sample, you can use the api\
-    \ key `special-key` to test the authorization     filters."
+  description: "This is a todolist server created for Use Dipper Assignment.  
   version: "1.0.0"
-  title: "Swagger Petstore"
-  termsOfService: "http://localhost:8080/terms/"
+  title: "NodeJs + Swagger To Do List Application"  
   contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    email: "jascee.gtbit@gmail.com"  
 host: "localhost:8080"
 basePath: "/v2"
 responses:
@@ -88,7 +81,7 @@ paths:
           type: "string"
           default: "available"
           enum:
-          - "available"
+          - "completed"
           - "pending"
         collectionFormat: "multi"
       - name: authorization
@@ -153,7 +146,7 @@ paths:
       - "TodoItems"
       summary: "Updates a todoitem in the list"
       description: ""
-      operationId: "updateTodowithId"
+      operationId: "updateTodoWithForm"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -175,6 +168,12 @@ paths:
         description: "Updated status of the todoItem"
         required: false
         type: "string"
+      - name: "due_date"
+        in: "formData"
+        description: "Updated status of the todoItem"
+        required: false          
+        type: "string"
+        format: "date"
       - name: authorization
         in: header
         description: an authorization header
@@ -243,7 +242,7 @@ paths:
           description: "successful operation"
       x-swagger-router-controller: "User"
   /user/login:
-    get:
+    post:
       tags:
       - "User"
       summary: "Logs user into the system"
@@ -254,16 +253,12 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "email"
-        in: "query"
-        description: "The user name for login"
+      - in: "body"
+        name: "body"
+        description: "The user details for login"
         required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/body_2"            
       responses:
         200:
           description: "successful operation"
@@ -391,6 +386,14 @@ definitions:
         type: "string"
       email:
         type: "string"
+      password:
+        type: "string"
+  body_2:
+    type: "object"
+    properties:      
+      email:
+        type: "string"
+        example: "string@gmail.com"
       password:
         type: "string"
 externalDocs:

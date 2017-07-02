@@ -93,13 +93,25 @@ exports.findTodoItemsByStatus = function(args, res, next) {
       return res.status(500).json({success: false, data: err});
     } 
 
-   })
+     console.log(args);
+   var query = client.query('SELECT * FROM todolists WHERE status =($1)', [args.status.value[0]]);
+      
+   query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      res.end(JSON.stringify(results));
+    });  
 
+
+   }); 
 
  
 }
 
-exports.getPetById = function(args, res, next) {
+exports.getTodoItemById = function(args, res, next) {
   /**
    * Find pet by ID
    * Returns a single pet
@@ -114,6 +126,19 @@ exports.getPetById = function(args, res, next) {
       console.log(err);
       return res.status(500).json({success: false, data: err});
     } 
+
+    console.log(args);
+   var query = client.query('SELECT * FROM todolists WHERE status =($1)', [args.status.value[0]]);
+      
+   query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      res.end(JSON.stringify(results));
+    });  
+
 
    })
   
@@ -140,7 +165,20 @@ exports.updateTodoWithForm = function(args, res, next) {
       return res.status(500).json({success: false, data: err});
     } 
 
-   })
-  res.end();
-}
+    client.query('UPDATE todolists SET status=($1), due_date=($2) WHERE todolist_id=($3)',
+    [args.status.value,  args.due_date.value, args.todoItemId.value]);
 
+    var query = client.query('SELECT * FROM todolists WHERE todolist_id =($1)', [args.todoItemId.value]);
+      
+   query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      res.end(JSON.stringify(results));
+
+     })
+  
+  });
+}
