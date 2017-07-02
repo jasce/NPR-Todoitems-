@@ -2,7 +2,7 @@
 var database = require('../models/database');
 var pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://postgres:jassi123@localhost:5432/todoitems';
-var pool = new pg.Pool(database.config);
+
 
 
 
@@ -13,11 +13,10 @@ exports.addTodoItem = function(args, res, next) {
    *
    * body Body TodoItem object that needs to be added to the list
    * no response value expected for this operations
-   **/
-
+   **/   
    const results = [];
   // Get a Postgres client from the connection pool
-  pool.connect(function(err, client, done){
+  database.pool.connect(function(err, client, done){
     // Handle connection errors
     if(err) {
       done();
@@ -36,7 +35,7 @@ exports.addTodoItem = function(args, res, next) {
         });
     // After all data is returned, close connection and return results
         query.on('end', () => {
-          pool.end();
+          database.pool.end();
           res.end(JSON.stringify(results));
         });
   });
@@ -52,7 +51,30 @@ exports.deletetodoItem = function(args, res, next) {
    * api_key String  (optional)
    * no response value expected for this operation
    **/
-  res.end();
+   console.log(args);
+   const results = [];
+   database.pool.connect(function(err , client , done){
+      if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    } 
+    console.log("value " + args.todoItemId.value);
+    client.query('DELETE FROM todolists WHERE todolist_id=($1)', [args.todoItemId.value]);
+
+    var query = client.query('SELECT * FROM todolists ORDER BY todolist_id ASC');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      res.end(JSON.stringify(results));
+    });  
+
+   });
+  
 }
 
 exports.findTodoItemsByStatus = function(args, res, next) {
@@ -63,22 +85,18 @@ exports.findTodoItemsByStatus = function(args, res, next) {
    * status List Status values that need to be considered for filter
    * returns List
    **/
-   console.log(args);
+   const results = [];
+   database.pool.connect(function(err , client , done){
+      if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    } 
 
-  var examples = {};
-  examples['application/json'] = [ {
-  "due_date" : "2000-01-23",
-  "description" : "aeiou",
-  "id" : 123456789,
-  "title" : "Learn Java",
-  "status" : "aeiou"
-} ];
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+   })
+
+
+ 
 }
 
 exports.getPetById = function(args, res, next) {
@@ -89,21 +107,19 @@ exports.getPetById = function(args, res, next) {
    * todoItemId Long ID of pet to return
    * returns inline_response_200
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "due_date" : "2000-01-23",
-  "description" : "aeiou",
-  "id" : 123456789,
-  "title" : "Learn Java",
-  "status" : "aeiou"
+   const results = [];
+   database.pool.connect(function(err , client , done){
+      if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    } 
+
+   })
+  
 };
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
-}
+  
+
 
 exports.updateTodoWithForm = function(args, res, next) {
   /**
@@ -115,6 +131,16 @@ exports.updateTodoWithForm = function(args, res, next) {
    * status String Updated status of the todoItem (optional)
    * no response value expected for this operation
    **/
+   console.log(args);
+   const results = [];
+   database.pool.connect(function(err , client , done){
+      if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    } 
+
+   })
   res.end();
 }
 

@@ -9,7 +9,7 @@ const config = {
   	database: 'todoitems',
 };
 
-var pool = new Pool(config);
+const pool = new Pool(config);
 
   pool.query('CREATE TABLE users(user_id SERIAL PRIMARY KEY, name VARCHAR(100) not null, email VARCHAR(100) UNIQUE ,password VARCHAR(100) not null  )', function(err) {    
     if (err) return err;    
@@ -20,6 +20,7 @@ var pool = new Pool(config);
       if(err) return err;     
     });
 module.exports.config = config;
+module.exports.pool = pool;
 
 
 
